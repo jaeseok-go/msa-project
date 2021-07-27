@@ -46,3 +46,19 @@ https://12factor.net/ko/
 그리고 주목해야할 부분은 도커와 같은 컨테이너 기반 가상화 도구를 활용해 CI/CD 파이프라인은 구축한 것을 볼 수 있고, Config Store를 따로 구성해 코드와 설정을 분리했음을 볼 수 있습니다.
 
 마지막으로 마이크로서비스를 모니터링, 진단할 수 있는 도구들을 활용한 것까지 확인할 수 있습니다.
+
+<br>
+
+## 객체 모델 매퍼 선정
+
+참고 : https://www.baeldung.com/java-performance-mapping-frameworks
+
+ModelMapper -> MapStruct
+
+위에서 제시한 링크에서 average running time, throughput를 비교해본 결과 MapStruct의 성능이 훨씬 좋게 나왔습니다.
+그 이유는 ModelMapper의 경우에는 runtime시 매번 object를 reflect하여 메모리를 많이 사용하게 됩니다.
+하지만 MapStruct의 경우에는 컴파일 시에 spring context에 mapper를 등록해두고 구현 메소드만 가져다 사용하기 때문에 훨씬 메모리를 덜 사용하고 이것이 성능으로 이어진 것입니다.
+![mapstruct_vs_modelmapper](img/mapstruct_vs_modelmapper.png)
+또한 구글 트렌드로 확인해본 결과 전 세계적으로 MapStruct를 점점 더 많이 사용하는 추세였습니다.
+
+
