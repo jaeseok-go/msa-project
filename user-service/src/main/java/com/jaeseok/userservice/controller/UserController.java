@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/user-service")
 public class UserController {
 
     @Autowired
@@ -28,7 +28,8 @@ public class UserController {
 
     @GetMapping("/health_check")
     public String status() {
-        return "user service is working";
+        String statusMessage = String.format("user service is running on port : %s", environment.getProperty("local.server.port"));
+        return statusMessage;
     }
 
     @GetMapping("/welcome")
