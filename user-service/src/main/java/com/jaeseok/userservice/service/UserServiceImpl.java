@@ -2,6 +2,7 @@ package com.jaeseok.userservice.service;
 
 import com.jaeseok.userservice.dto.UserDto;
 import com.jaeseok.userservice.entity.UserEntity;
+import com.jaeseok.userservice.mapper.UserMapper;
 import com.jaeseok.userservice.repository.UserRepository;
 import com.jaeseok.userservice.vo.ResponseOrder;
 import org.modelmapper.ModelMapper;
@@ -28,16 +29,14 @@ public class UserServiceImpl implements UserService{
     public UserDto createdUser(UserDto userDto) {
         userDto.setUserId(UUID.randomUUID().toString());
 
-        ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        UserEntity userEntity = UserMapper.INSTANCE.dtoToEntity(userDto);
 
-        UserEntity userEntity = mapper.map(userDto, UserEntity.class);
         String encodedPassword = passwordEncoder.encode(userDto.getPassword());
         userEntity.setEncryptedPassword(encodedPassword);
 
-        userRepository.save(userEntity);
+        UserEntity resultEntity = userRepository.save(userEntity);
 
-        UserDto returnUserDto = mapper.map(userEntity, UserDto.class);
+        UserDto returnUserDto = UserMapper.INSTANCE.entityToDto(resultEntity);
         return returnUserDto;
     }
 
@@ -48,7 +47,7 @@ public class UserServiceImpl implements UserService{
                     throw new UsernameNotFoundException(userId);
                 });
 
-        UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
+        UserDto userDto = UserMapper.INSTANCE.entityToDto(userEntity);
 
         List<ResponseOrder> orders = new ArrayList<>();
         userDto.setOrders(orders);

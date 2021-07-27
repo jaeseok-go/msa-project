@@ -2,12 +2,12 @@ package com.jaeseok.userservice.controller;
 
 import com.jaeseok.userservice.dto.UserDto;
 import com.jaeseok.userservice.entity.UserEntity;
+import com.jaeseok.userservice.mapper.UserMapper;
 import com.jaeseok.userservice.service.UserService;
 import com.jaeseok.userservice.vo.Greeting;
 import com.jaeseok.userservice.vo.RequestUser;
 import com.jaeseok.userservice.vo.ResponseUser;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -47,13 +47,10 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity<ResponseUser> createUser(@RequestBody RequestUser user) {
-        ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        UserDto userDto = UserMapper.INSTANCE.requestToDto(user);
+        UserDto resultDto = userService.createdUser(userDto);
 
-        UserDto userDto = mapper.map(user, UserDto.class);
-        userService.createdUser(userDto);
-
-        ResponseUser responseUser = mapper.map(userDto, ResponseUser.class);
+        ResponseUser responseUser = UserMapper.INSTANCE.dtoToResponse(resultDto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
