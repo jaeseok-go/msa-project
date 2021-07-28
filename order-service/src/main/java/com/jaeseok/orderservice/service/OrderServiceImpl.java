@@ -21,6 +21,9 @@ public class OrderServiceImpl implements OrderService{
         String createdOrderId = UUID.randomUUID().toString();
         orderDetails.setOrderId(createdOrderId);
 
+        int totalPrice = orderDetails.getUnitPrice() * orderDetails.getQuantity();
+        orderDetails.setTotalPrice(totalPrice);
+
         OrderEntity orderEntity = OrderMapper.INSTANCE.dtoToEntity(orderDetails);
         orderEntity = orderRepository.save(orderEntity);
 
