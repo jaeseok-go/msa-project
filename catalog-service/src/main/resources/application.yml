@@ -18,6 +18,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+    show-sql: true
+    generate-ddl: true
 
 
 eureka:
@@ -29,5 +31,7 @@ eureka:
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka
 
-greeting:
-  message: Welcome to the Simple E-Commerce.
+
+logging:
+  level:
+    com.jaeseok.catalogservice: DEBUG
