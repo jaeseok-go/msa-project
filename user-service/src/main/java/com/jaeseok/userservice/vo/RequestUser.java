@@ -1,12 +1,16 @@
 package com.jaeseok.userservice.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RequestUser {
 
     @NotNull(message = "e-mail cannot be null")

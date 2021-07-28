@@ -5,8 +5,6 @@ import com.jaeseok.userservice.entity.UserEntity;
 import com.jaeseok.userservice.mapper.UserMapper;
 import com.jaeseok.userservice.repository.UserRepository;
 import com.jaeseok.userservice.vo.ResponseOrder;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

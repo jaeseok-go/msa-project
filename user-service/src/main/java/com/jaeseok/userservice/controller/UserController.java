@@ -7,7 +7,6 @@ import com.jaeseok.userservice.service.UserService;
 import com.jaeseok.userservice.vo.Greeting;
 import com.jaeseok.userservice.vo.RequestUser;
 import com.jaeseok.userservice.vo.ResponseUser;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -62,7 +61,7 @@ public class UserController {
         Iterable<UserEntity> userList = userService.getUserByAll();
 
         List<ResponseUser> result = new ArrayList<>();
-        userList.forEach(u -> result.add(new ModelMapper().map(u, ResponseUser.class)));
+        userList.forEach(u -> result.add(UserMapper.INSTANCE.entityToResponse(u)));
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -73,7 +72,7 @@ public class UserController {
     public ResponseEntity<ResponseUser> getUserByUserId(@PathVariable(name = "userId") String userId) {
         UserDto userDto = userService.getUserByUserId(userId);
 
-        ResponseUser result = new ModelMapper().map(userDto, ResponseUser.class);
+        ResponseUser result = UserMapper.INSTANCE.dtoToResponse(userDto);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
