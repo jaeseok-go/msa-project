@@ -6,6 +6,8 @@ import com.jaeseok.userservice.mapper.UserMapper;
 import com.jaeseok.userservice.repository.UserRepository;
 import com.jaeseok.userservice.vo.ResponseOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,17 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity userEntity = userRepository.findByEmail(username)
+                .orElseThrow(() -> {
+                    throw new UsernameNotFoundException(username);
+                });
+        return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(),
+                true, true, true, true,
+                new ArrayList<>());
+    }
 
     @Override
     public UserDto createdUser(UserDto userDto) {
