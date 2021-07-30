@@ -19,11 +19,13 @@ import java.util.UUID;
 @Service
 public class UserServiceImpl implements UserService{
 
-    @Autowired
     UserRepository userRepository;
-
-    @Autowired
     BCryptPasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -34,6 +36,17 @@ public class UserServiceImpl implements UserService{
         return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(),
                 true, true, true, true,
                 new ArrayList<>());
+    }
+
+    @Override
+    public UserDto getUserDetailsByEmail(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    throw new UsernameNotFoundException(email);
+                });
+
+        UserDto userDto = UserMapper.INSTANCE.entityToDto(userEntity);
+        return userDto;
     }
 
     @Override
@@ -70,4 +83,6 @@ public class UserServiceImpl implements UserService{
     public Iterable<UserEntity> getUserByAll() {
         return userRepository.findAll();
     }
+
+
 }
