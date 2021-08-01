@@ -36,3 +36,9 @@ greeting:
 logging:
   leve:
     com.jaeseok.userservice: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans
