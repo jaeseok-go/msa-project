@@ -31,8 +31,14 @@ public class UserController {
 
     @GetMapping("/health_check")
     public String status() {
-        String statusMessage = String.format("user service is running on port : %s",
-                environment.getProperty("local.server.port"));
+        String portNum = environment.getProperty("local.server.port");
+        String tokenExpirationTime = environment.getProperty("token.expiration_time");
+        String tokenSecret = environment.getProperty("token.secret");
+
+        String statusMessage = "user service is running on port : " + portNum
+                + ", expiration time : " + tokenExpirationTime
+                + ", secret : " + tokenSecret;
+
         return statusMessage;
     }
 
